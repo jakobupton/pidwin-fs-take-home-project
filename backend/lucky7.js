@@ -47,12 +47,11 @@ class Lucky7 {
             console.log(`Bet resolved for game number ${bet.gameNumber}; user(${user.id}): ${bet.result ? 'Win' : 'Lose'}`);
             
         }
-        this.io.emit('hello');
-        // this.io.emit( {
-        //     gameNumber: this.gameNumber,
-        //     isLucky7,
-        //     results
-        // })
+        this.io.emit('lucky7BetResult', {
+            gameNumber: this.gameNumber,
+            isLucky7,
+            results
+        })
     }
 
     async #initializeGameCounter() {
