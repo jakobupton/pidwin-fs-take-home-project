@@ -1,10 +1,12 @@
 import express from 'express';
 import Lucky7Bet from '../models/bet.js';
+import User from '../models/user.js';
 
 const betRouter = (Lucky7Instance) => {
     const router = express.Router();
     router.post('/bet', async (req, res) => {
         const { playerId, betAmount, betChoice } = req.body;
+
         const nextGameNumber = Lucky7Instance.getNextGameNumber();
         const timeleft = Lucky7Instance.getNextGameTime() - new Date().getTime();
         if (timeleft <= 5000) { // 5 seconds before next game
@@ -15,6 +17,12 @@ const betRouter = (Lucky7Instance) => {
         if (existingBet) {
             return res.status(400).json({ message: "You have already placed a bet for this round." });
         }
+
+        const existingUser = await User.findOne({ id: playerId });
+        if (!existingUser) {
+            return res.status(400).json({ message: "User not found." });
+        }
+        
         
         
         const bet = new Lucky7Bet({
