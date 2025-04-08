@@ -22,6 +22,10 @@ const betRouter = (Lucky7Instance) => {
         if (!existingUser) {
             return res.status(400).json({ message: "User not found." });
         }
+
+        if (betAmount < 1) {
+            return res.status(400).json({ message: "Minimum bet amount is 1." });
+        }
         
         
         
